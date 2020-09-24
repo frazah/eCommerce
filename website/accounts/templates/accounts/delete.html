@@ -1,0 +1,27 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-body">
+
+
+                <p>Vuoi eliminare l'ordine "{{order.product.name}}"?</p>
+
+                <form action="{% url 'delete_order' order.id %}" method="POST">
+
+                    {% csrf_token %}
+                    <a class="btn btn-info" href="{% url 'home' %}">Annulla</a>
+
+                    <input class="btn btn-danger" type="submit" name="Confirm">
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

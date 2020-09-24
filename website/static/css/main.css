@@ -11,7 +11,12 @@
 		}
 
 
+
 		#orders-delivered{
+			background-color: #7abecc;
+		}
+
+		#orders-sent{
 			background-color: #7abecc;
 		}
 
