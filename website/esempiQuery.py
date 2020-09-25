@@ -1,19 +1,19 @@
 from website.accounts.models import *
 
 #***(1)Returns all customers from customer table
-customers = User.objects.all()
+customers = Customer.objects.all()
 
 #(2)Returns first customer in table
-firstCustomer = User.objects.first()
+firstCustomer = Customer.objects.first()
 
 #(3)Returns last customer in table
-lastCustomer = User.objects.last()
+lastCustomer = Customer.objects.last()
 
 #(4)Returns single customer by name
-customerByName = User.objects.get(name='Peter Piper')
+customerByName = Customer.objects.get(name='Peter Piper')
 
 #***(5)Returns single customer by name
-customerById = User.objects.get(id=4)
+customerById = Customer.objects.get(id=4)
 
 #***(6)Returns all orders related to customer (firstCustomer variable set above)
 firstCustomer.order_set.all()
@@ -61,7 +61,7 @@ class ParentModel(models.Model):
 	name = models.CharField(max_length=200, null=True)
 
 class ChildModel(models.Model):
-	parent = models.ForeignKey(User)
+	parent = models.ForeignKey(Customer)
 	name = models.CharField(max_length=200, null=True)
 
 parent = ParentModel.objects.first()

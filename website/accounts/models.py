@@ -5,7 +5,7 @@ from django.db import models
 
 #qui scriviamo le tabelle del database
 
-class User(models.Model):
+class Customer(models.Model):
     name = models.CharField(max_length=30, null = True)
     email = models.EmailField(max_length = 30,null = True)
     phone = models.CharField(max_length=30, null = True)
@@ -51,7 +51,7 @@ class Order(models.Model):
         ('Spedito','Spedito'),
         ('Consegnato', 'Consegnato'),
     )
-    user = models.ForeignKey(User, null = True, on_delete= models.SET_NULL)
+    user = models.ForeignKey(Customer, null = True, on_delete= models.SET_NULL)
     product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(auto_now_add= True)
     status = models.CharField(max_length=200, null= True, choices=STATUS)
