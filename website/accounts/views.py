@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import *
 from .models import *
 from .forms import *
 from .filters import OrderFilter
@@ -20,8 +20,6 @@ def registerForm(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            group = Group.objects.get(name = 'user')
-            user.groups.add(group)
 
             messages.success(request, 'Utente '+ username +' creato')
 
@@ -146,5 +144,35 @@ def deleteOrder(request,pk):
     return render(request, 'accounts/delete.html', tabella)
 
 
-def profile(request):
-    return render(request, 'accounts/profile.html')
+@login_required(login_url='loginForm')
+@allowed_users(allowed_roles = ['customer'])
+def accountSettings(request):
+    customer  = request.user.customer
+    form = CustomerForm(instance = customer)
+
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST,request.FILES,instance = customer)
+        if form.is_valid():
+            form.save()
+
+    tabella = {'form':form}
+    return render(request, 'accounts/account_settings.html', tabella)
+
+
+
+
+
+@login_required(login_url='loginForm')
+@allowed_users(allowed_roles = ['customer'])
+def userPage(request):
+    orders = request.user.customer.order_set.all()
+
+    tot_orders = orders.count()
+
+    delivered = orders.filter(status='Consegnato').count()
+    sent = orders.filter(status='Spedito').count()
+    pending = orders.filter(status='In elaborazione').count()
+
+    tabella = {'orders':orders, 'tot_orders':tot_orders, 'delivered': delivered, 'sent':sent, 'pending':pending}
+    return render(request, 'accounts/user.html',tabella)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import *
 
 # Create your models here.
 
@@ -6,10 +7,12 @@ from django.db import models
 #qui scriviamo le tabelle del database
 
 class Customer(models.Model):
+    user = models.OneToOneField(User, null = True,blank= True, on_delete= models.CASCADE) #relazione 1 a 1, se customer viene eliminato anche l'user verrà eliminato
     name = models.CharField(max_length=30, null = True)
     email = models.EmailField(max_length = 30,null = True)
     phone = models.CharField(max_length=30, null = True)
     signUpDate = models.DateTimeField(auto_now_add= True)
+    propic = models.ImageField(default="pro.jpg",null = True, blank=True)
 
     def __str__(self):
         return self.name
