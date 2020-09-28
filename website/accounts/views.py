@@ -54,7 +54,7 @@ def logoutUser(request):
     return redirect('home')
 
 @login_required(login_url='loginForm')
-#@allowed_users(allowed_roles = ['admin'])
+@allowed_users(allowed_roles = ['admin'])
 def home(request):
     orders = Order.objects.all()
     users = Customer.objects.all()
@@ -71,6 +71,31 @@ def home(request):
                'delivered':delivered, 'sent':sent, 'pending':pending}
 
     return render(request, 'accounts/dashboard.html', tabella)
+
+
+#@login_required(login_url='loginForm')
+#@allowed_users(allowed_roles = ['customer','admin'])
+def shop(request):
+    products = Product.objects.all()
+    tabella = {'products':products}
+    return render(request, 'accounts/shop.html', tabella)
+
+def cart(request):
+    products = Product.objects.all()
+    tabella = {}
+    return render(request, 'accounts/cart.html', tabella)
+
+def checkout(request):
+    products = Product.objects.all()
+    tabella = {}
+    return render(request, 'accounts/checkout.html', tabella)
+
+
+
+
+
+
+
 
 
 @login_required(login_url='loginForm')
