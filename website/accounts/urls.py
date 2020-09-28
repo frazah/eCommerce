@@ -14,11 +14,15 @@ urlpatterns = [
     path('loginForm/',views.loginForm, name="loginForm"),
     path('logout/', views.logoutUser, name = "logout"),
 
-    path('changePassword/', auth_views.PasswordResetView.as_view(), name = "reset_password"),
-    path('changePassword_sent/', auth_views.PasswordResetDoneView.as_view(), name ="password_reset_done"),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name = "password_reset_confirm"),
+    path('changePassword/', auth_views.PasswordResetView.as_view(template_name="accounts/changePassword.html"), name = "reset_password"),
+    path('changePassword_sent/', auth_views.PasswordResetDoneView.as_view(template_name="accounts/passwordResetSent.html"), name ="password_reset_done"),
+    path('reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(template_name="accounts/passwordResetForm.html"),
+         name = "password_reset_confirm"),
     # uidb64= id utente in base 64, token x controllare se è valida
-    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
+    path('reset_password_complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name="accounts/passwordResetComplete.html"),
+         name="password_reset_complete"),
 
     ### PARTE ADMIN
 
