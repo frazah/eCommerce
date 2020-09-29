@@ -5,7 +5,14 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import *
+from django.shortcuts import render
+from django.http import JsonResponse
+
+import json
+
+
 from .models import *
 from .forms import *
 from .filters import OrderFilter
@@ -80,14 +87,49 @@ def shop(request):
     tabella = {'products':products}
     return render(request, 'accounts/shop.html', tabella)
 
+
+@login_required(login_url='loginForm')
+@allowed_users(allowed_roles = ['customer'])
 def cart(request):
-    products = Product.objects.all()
-    tabella = {}
+
+    customer = request.user.customer
+    order, created = Order.objects.get_or_create(customer=customer,complete = False)
+    items = order.orderitem_set.all()
+
+    tabella = {'items':items, 'order':order}
     return render(request, 'accounts/cart.html', tabella)
 
+@csrf_exempt
+def updateItem(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+    print('Action', action)
+    print('productId:', productId)
+    customer = request.user.customer
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer,complete = False)
+    orderItem,created = OrderItem.objects.get_or_create(order=order, product = product)
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Item was added', safe = False)
+
+@login_required(login_url='loginForm')
+@allowed_users(allowed_roles = ['customer'])
 def checkout(request):
-    products = Product.objects.all()
-    tabella = {}
+    customer = request.user.customer
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    items = order.orderitem_set.all()
+    tabella = {'items':items, 'order':order}
     return render(request, 'accounts/checkout.html', tabella)
 
 
