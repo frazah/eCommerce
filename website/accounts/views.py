@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import *
 from django.shortcuts import render
 from django.http import JsonResponse
+import datetime
 
 import json
 
@@ -83,8 +84,19 @@ def home(request):
 #@login_required(login_url='loginForm')
 #@allowed_users(allowed_roles = ['customer','admin'])
 def shop(request):
+    if request.user.is_authenticated and not request.user.is_staff:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:
+        items = []
+        order = {'get_cart_total':0, 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
+
     products = Product.objects.all()
-    tabella = {'products':products}
+    tabella = {'products':products, 'cartItems':cartItems}
     return render(request, 'accounts/shop.html', tabella)
 
 
@@ -95,8 +107,9 @@ def cart(request):
     customer = request.user.customer
     order, created = Order.objects.get_or_create(customer=customer,complete = False)
     items = order.orderitem_set.all()
+    cartItems = order.get_cart_items
 
-    tabella = {'items':items, 'order':order}
+    tabella = {'items':items, 'order':order, 'cartItems':cartItems}
     return render(request, 'accounts/cart.html', tabella)
 
 @csrf_exempt
@@ -121,6 +134,8 @@ def updateItem(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
 
+    print("a")
+
     return JsonResponse('Item was added', safe = False)
 
 @login_required(login_url='loginForm')
@@ -129,8 +144,41 @@ def checkout(request):
     customer = request.user.customer
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     items = order.orderitem_set.all()
-    tabella = {'items':items, 'order':order}
+    cartItems = order.get_cart_items
+
+    tabella = {'items':items, 'order':order, 'cartItems':cartItems}
     return render(request, 'accounts/checkout.html', tabella)
+
+@login_required(login_url='loginForm')
+@allowed_users(allowed_roles = ['customer'])
+def processOrder(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+
+    customer = request.user.customer
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+    order.status = 'In elaborazione'
+
+    if total == order.get_cart_total:
+        order.complete = True
+
+    Shipping.objects.create(
+        customer = customer,
+        order = order,
+        address = data['shipping']['address'],
+        city = data['shipping']['city'],
+        state = data['shipping']['state'],
+        zipcode = data['shipping']['zipcode'],
+    )
+
+    order.save()
+
+
+
+
+    return JsonResponse('Payment submitted', safe = False)
 
 
 

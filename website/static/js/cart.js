@@ -12,7 +12,7 @@ for(i=0; i< updateButtons.length; i++)
 
 
 function updateUserOrder(productId,action){
-var url = ('update_item/')
+var url = ('/update_item/')
  console.log('a')
 fetch(url, {
         method:'POST',
