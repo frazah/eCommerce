@@ -43,7 +43,7 @@
     </ul>
   </div>
 
-  <span class="hello-msg">Ciao, {{ request.user }}</span>
+  <span class="hello-msg">Ciao, {{ request.user }} </span>
   {% if request.user.is_authenticated %}
   <span><a class="hello-msg" href="{% url 'logout'  %}"> Logout </a></span>
   {% endif %}

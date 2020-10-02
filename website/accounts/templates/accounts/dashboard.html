@@ -11,7 +11,6 @@
 		<h5>UTENTI:</h5>
 		<hr>
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="">Crea Utente</a>
 			<table class="table table-sm">
 				<tr>
 					<th></th>
@@ -39,7 +38,7 @@
 		<hr>
 			<table class="table table-sm">
 				<tr>
-					<th>Prodotto</th>
+					<th>Id Ordine</th>
 					<th>Data ordine</th>
 					<th>Stato</th>
 					<th>Aggiorna</th>
@@ -49,7 +48,7 @@
 				{% for order in orders %}
 
 				<tr>
-					<td> {{order.product}}</td>
+					<td> {{order.id}}</td>
 					<td> {{order.date}}</td>
 					<td> {{order.status}}</td>
 					<td> <a class="btn btn-sm btn-info"  href="{% url 'update_order' order.id %}">Aggiorna</a> </td>

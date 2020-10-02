@@ -35,20 +35,7 @@
 
 
 <br>
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
-			<form method="get">
 
-				{{myFilter.form}}
-
-
-		    <button class="btn btn-primary" type="submit">Search</button>
-		  </form>
-		</div>
-	</div>
-
-</div>
 <br>
 
 <div class="row">
@@ -57,7 +44,6 @@
 			<table class="table table-sm">
 				<tr>
 					<th>Prodotto</th>
-					<th>Categoria</th>
 					<th>Data ordine</th>
 					<th>Stato</th>
 					<th>Aggiorna</th>
@@ -67,8 +53,7 @@
 				{% for order in orders %}
 
 				<tr>
-					<td>  {{ order.product }}  </td>
-					<td>  {{ order.product.category }}  </td>
+					<td>  {{ order.id }} </td>
 					<td>  {{ order.date }}  </td>
 					<td>  {{ order.status }}  </td>
 					<td> <a class="btn btn-sm btn-info"  href="{% url 'update_order' order.id %}">Aggiorna</a> </td>

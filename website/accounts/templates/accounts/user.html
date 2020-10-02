@@ -9,8 +9,7 @@
 		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
-					<th>Prodotto</th>
-					<th>Categoria</th>
+					<th>Id ordine</td>
 					<th>Data ordine</th>
 					<th>Stato</th>
 				</tr>
@@ -18,8 +17,7 @@
 				{% for order in orders %}
 
 				<tr>
-					<td>  {{ order.product }}  </td>
-					<td>  {{ order.product.category }}  </td>
+					<td>  {{ order.id }}  </td>
 					<td>  {{ order.date }}  </td>
 					<td>  {{ order.status }}  </td>
 
