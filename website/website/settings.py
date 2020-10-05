@@ -42,14 +42,17 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
     'accounts.apps.AccountConfig',
-
+    'social_django',
     'django_filters',
 ]
 
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = 'home'
+
+
 
 SOCIALACCOUNT_PROVIDERS = {
     'google':{
@@ -60,7 +63,17 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS':{
             'access_type':'online',
         }
+    },
+
+    'github': {
+        'SCOPE': [
+            'user:email',
+            'repo',
+            'read:org',
+        ],
     }
+
+
 }
 
 MIDDLEWARE = [
