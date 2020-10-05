@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 
 <head>
 	<title>Login</title>
@@ -14,13 +15,13 @@
 			margin: 0;
 			padding: 0;
 			height: 100%;
-			background: #424242 !important;
+			background: #fff !important;
 		}
 		.user_card {
 			width: 350px;
 			margin-top: auto;
 			margin-bottom: auto;
-			background: #9cabf7;
+			background: #439da8;
 			position: relative;
 			display: flex;
 			justify-content: center;
@@ -110,16 +111,18 @@
 					<p id="messages">{{message}}</p>
 				{% endfor %}
 
-				<span><a class="hello-msg" href="http://127.0.0.1:8000/accounts/google/login/?process=login"> ACCEDI CON GOOGLE </a></span>
-
+				<div class ="mt-4 d-flex justify-content-center h-100">
+				<a href="http://127.0.0.1:8000/accounts/google/login/?process=login">
+					<img  width=40 id = "cart-icon" src="{% static 'img/google.png' %}"></a>
+				</div>
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
-						Non hai un account ? <a href="{% url 'registerForm' %}" class="ml-2">REGISTRATI</a>
+						Non hai un account ? <a style="color:white" href="{% url 'registerForm' %}" class="ml-2"><u>REGISTRATI</u></a>
 					</div>
 
 					<div class="mt-4">
 					<div class="d-flex justify-content-center links">
-						<a href="{% url 'reset_password' %}" class="ml-2">Password dimenticata ?</a>
+						<a style="color:white" href="{% url 'reset_password' %}" class="ml-2"><u>Password dimenticata ? </u></a>
 					</div>
 
 				</div>
