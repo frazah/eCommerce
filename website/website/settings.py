@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
+    'django_otp',
+    'django_otp.plugins.otp_hotp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_static',
+    'admin_honeypot',
     'accounts.apps.AccountConfig',
     'social_django',
     'django_filters',
@@ -84,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'

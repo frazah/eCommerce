@@ -1,6 +1,23 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView
+from django_otp.admin import OTPAdminSite
+from django.contrib.auth.models import User
+from django.contrib import admin
+from django_otp.plugins.otp_totp.models import TOTPDevice
+from django.conf.urls import url,include
+from django_otp.views import LoginView
+class OTPAdmin(OTPAdminSite):
+    pass
+
+
+admin_site = OTPAdmin(name='OTPAdmin')
+admin_site.register(User)
+admin_site.register(TOTPDevice)
+
+
+admin.site.__class__ = OTPAdminSite
 
 
 
@@ -11,6 +28,9 @@ urlpatterns = [
 
     ### ACCESSO
 
+   #url(r'^admin/',admin_site.urls),
+   #url(r'^dadmin/',admin.site.urls),
+    url(r'^adminhoney/',include('admin_honeypot.urls',namespace='admin_honeypot')),
     path('registerForm/', views.registerForm, name="registerForm"),
     path('loginForm/',views.loginForm, name="loginForm"),
     path('logout/', views.logoutUser, name = "logout"),
