@@ -33,6 +33,13 @@ h1,h2,h3,h4,h5,h6{
 	color:hsl(0, 0%, 30%);
 }
 
+ .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 10%;
+}
+
 .box-element{
 	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
 	background-color: #fff;
@@ -42,7 +49,7 @@ h1,h2,h3,h4,h5,h6{
 
 .thumbnail{
 	width: 100%;
-	height: 400px;
+	height: 500px;
 	-webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
     -moz-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
     box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
@@ -54,6 +61,10 @@ h1,h2,h3,h4,h5,h6{
 
 .bg-dark{
 	background-color: #4f868c!important;
+}
+
+.bg-d{
+    background-color: #b8b8b8!important;
 }
 
 #cart-icon{

@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
+
 from django.contrib.auth.models import *
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -79,8 +80,10 @@ def home(request):
     sent = orders.filter(status='Spedito').count()
     pending = orders.filter(status='In elaborazione').count()
 
+    myfilter = OrderFilter()
+
     tabella = {'orders':orders , 'users':users , 'tot_orders':tot_orders ,
-               'delivered':delivered, 'sent':sent, 'pending':pending}
+               'delivered':delivered, 'sent':sent, 'pending':pending, 'myfilter':myfilter}
 
     return render(request, 'accounts/dashboard.html', tabella)
 
@@ -98,9 +101,13 @@ def shop(request):
         order = {'get_cart_total':0, 'get_cart_items':0}
         cartItems = order['get_cart_items']
 
-
     products = Product.objects.all()
-    tabella = {'products':products, 'cartItems':cartItems}
+    myfilter = OrderFilter(request.GET, queryset=products)
+    products = myfilter.qs
+    var = True
+
+
+    tabella = {'products':products, 'cartItems':cartItems, 'myfilter':myfilter,'var':var}
     return render(request, 'accounts/shop.html', tabella)
 
 
